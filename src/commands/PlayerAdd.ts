@@ -2,7 +2,6 @@ import { CommandInteraction, Client, GuildMember } from "discord.js";
 import { ApplicationCommandType, ApplicationCommandOptionType } from 'discord-api-types/v10';
 import { Command } from "../types/Command";
 import { rcon, verifyConnection } from '../setRCON';
-import env from '../config/environment';
 
 export const PlayerAdd: Command = {
     name: "add",
@@ -38,15 +37,15 @@ export const PlayerAdd: Command = {
             return;
         }
 
-        if (env.SUPER_ROLE_IDS.length === 0) {
+        if (process.env.SUPER_ROLE_IDS.length === 0) {
             isSuperUser = true;
         } else {
             interaction.member.roles.cache.map(role => {
-                if (env.SUPER_ROLE_IDS.includes(role.id)) isSuperUser = true;
+                if (process.env.SUPER_ROLE_IDS.includes(role.id)) isSuperUser = true;
             });
         }
         
-        if (env.SUPER_ROLE_IDS.length === 0) isSuperUser = true;
+        if (process.env.SUPER_ROLE_IDS.length === 0) isSuperUser = true;
 
         if (!isSuperUser) {
             await interaction.reply({

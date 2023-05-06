@@ -1,29 +1,18 @@
-import 'dotenv/config';
 import { z } from "zod";
-import { cleanEnv, makeValidator, num } from 'envalid'
-
-const notEmptyString = makeValidator(x => {
-  try {
-    z.string().nonempty().parse(x)
-    return x;
-  } catch {
-    throw new Error('Expected non-empty string')
+ 
+const envVariables = z.object({
+  DISCORD_TOKEN: z.string().nonempty(),
+  RCON_HOST:  z.string().nonempty(),
+  RCON_PASS: z.string().nonempty(),
+  RCON_PORT: z.number().default(25575),
+  SUPER_ROLE_IDS: z.string().transform(val => val.split(","))
+});
+ 
+envVariables.parse(process.env);
+ 
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv
+      extends z.infer<typeof envVariables> {}
   }
-});
-
-const validateSuperRoles = makeValidator(x => {
-  try {
-    z.string().nonempty().parse(x)
-    return x.split(',');
-  } catch {
-    throw new Error('Expected non-empty string')
-  }
-});
-
-export default cleanEnv(process.env, {
-  DISCORD_TOKEN: notEmptyString(),
-  RCON_HOST:  notEmptyString(),
-  RCON_PASS: notEmptyString(),
-  RCON_PORT: num({ default: 25575 }),
-  SUPER_ROLE_IDS: validateSuperRoles({ default: [] }),
-});
+}

@@ -1,4 +1,3 @@
-import env from './config/environment';
 import { Client, GatewayIntentBits } from 'discord.js';
 import { rcon } from './setRCON';
 import app from './listeners/health';
@@ -18,6 +17,6 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 ready(client);
 interactionCreate(client);
 
-client.login(env.DISCORD_TOKEN);
+client.login(process.env.DISCORD_TOKEN);
 
 rcon.connect().catch(console.error);
