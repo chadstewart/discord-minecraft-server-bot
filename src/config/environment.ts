@@ -4,7 +4,7 @@ import { cleanEnv, makeValidator, num } from 'envalid'
 
 const notEmptyString = makeValidator(x => {
   try {
-    z.string().parse(x)
+    z.string().nonempty().parse(x)
     return x;
   } catch {
     throw new Error('Expected non-empty string')
@@ -13,7 +13,7 @@ const notEmptyString = makeValidator(x => {
 
 const validateSuperRoles = makeValidator(x => {
   try {
-    z.string().parse(x)
+    z.string().nonempty().parse(x)
     return x.split(',');
   } catch {
     throw new Error('Expected non-empty string')
