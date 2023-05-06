@@ -1,18 +1,23 @@
 import 'dotenv/config';
+import { z } from "zod";
 import { cleanEnv, makeValidator, num } from 'envalid'
 
 const notEmptyString = makeValidator(x => {
-  if (typeof x !== 'string' || x.length === 0) {
+  try {
+    z.string().parse(x)
+    return x;
+  } catch {
     throw new Error('Expected non-empty string')
   }
-  return x
 });
 
 const validateSuperRoles = makeValidator(x => {
-  if (typeof x !== 'string' || x.length === 0) {
+  try {
+    z.string().parse(x)
+    return x.split(',');
+  } catch {
     throw new Error('Expected non-empty string')
   }
-  return x.split(',');
 });
 
 export default cleanEnv(process.env, {
