@@ -1,3 +1,4 @@
+import "./config/environment";
 import { Client, GatewayIntentBits } from 'discord.js';
 import { rcon } from './setRCON';
 import app from './listeners/health';
